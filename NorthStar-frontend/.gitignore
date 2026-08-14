@@ -22,3 +22,28 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Vite
+.vite
+
+# pnpm
+pnpm-lock.yaml
+pnpm-workspace.yaml
+
+# Build outputs
+*.tsbuildinfo
+
+# Test coverage
+coverage
+.nyc_output
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
