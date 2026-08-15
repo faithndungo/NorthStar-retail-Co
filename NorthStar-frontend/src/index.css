@@ -101,6 +101,9 @@ select {
   border-radius: 8px;
   font: inherit;
   width: 100%;
+  color: #111827 !important;
+  background-color: #ffffff !important;
+  appearance: auto;
 }
 
 button,
@@ -354,4 +357,9 @@ code {
     box-shadow: none;
     border: none;
   }
+}
+
+select option {
+  color: #111827 !important;
+  background-color: #ffffff !important;
 }
