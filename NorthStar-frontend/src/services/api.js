@@ -1,4 +1,7 @@
-const API_BASE = import.meta.env.VITE_API_BASE || '/api';
+// src/services/api.js
+
+const API_BASE = import.meta.env.VITE_API_BASE || 'http://127.0.0.1:8000/api';
+export const API_BASE_URL = API_BASE;
 
 function buildQuery(params) {
   const qs = Object.entries(params)
@@ -32,7 +35,6 @@ async function apiFetch(path, { method = 'GET', body, token } = {}) {
   }
 
   if (!response.ok) {
-    // Handles the structured error contract AND DRF default formats
     const detail =
       payload?.error?.message ||
       payload.detail ||
