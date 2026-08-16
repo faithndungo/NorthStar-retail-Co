@@ -152,8 +152,11 @@ REST_FRAMEWORK = {
 
 RETURN_WINDOW_DAYS = int(os.environ.get('RETURN_WINDOW_DAYS', '30'))
 
-MAILERS = {
-    'default': {
-        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
-    },
-}
+
+# MAILERS = {
+#     'default': {
+#         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
+#     },
+# }
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
