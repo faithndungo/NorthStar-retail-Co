@@ -1,11 +1,6 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createSession } from '../services/sessionService.js';
-
-const SessionContext = createContext({
-  sessionToken: '',
-  sessionLoading: true,
-  sessionWarning: ''
-});
+import { SessionContext } from './sessionContext.js';
 
 function makeLocalToken() {
   if (window.crypto && window.crypto.randomUUID) {
@@ -55,8 +50,4 @@ export function SessionProvider({ children }) {
       {children}
     </SessionContext.Provider>
   );
-}
-
-export function useSession() {
-  return useContext(SessionContext);
 }

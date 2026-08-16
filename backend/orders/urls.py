@@ -1,14 +1,8 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import OrderViewSet, OrderItemViewSet
+from django.urls import path
 
-
-router = DefaultRouter()
-
-router.register('orders', OrderViewSet, basename='order')
-router.register('order-items', OrderItemViewSet, basename='order-item')
+from .views import OrderLookupView
 
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('orders/lookup/', OrderLookupView.as_view(), name='order-lookup'),
 ]

@@ -35,5 +35,14 @@ class StockAlert(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     notified = models.BooleanField(default=False)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['variant', 'email'],
+                condition=models.Q(notified=False),
+                name='unique_pending_stock_alert',
+            ),
+        ]
+
     def __str__(self):
         return f"Stock Alert for {self.email} on {self.variant}"

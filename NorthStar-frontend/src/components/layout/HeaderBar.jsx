@@ -1,4 +1,4 @@
-import { useSession } from '../../context/SessionContext.jsx';
+import { useSession } from '../../context/sessionContext.js';
 
 const ACTIONS = [
   { key: 'home', label: 'Home' },
@@ -13,29 +13,31 @@ export default function HeaderBar({ active, onNavigate }) {
   return (
     <header className="app-header">
       <div className="brand">
-        <h1>Northstar Support Deflection MVP</h1>
-        <p>Guest self-service for order, return, and stock questions.</p>
+        <button type="button" className="brand-link" onClick={() => onNavigate('home')}>
+          <span className="brand-mark" aria-hidden="true">N</span>
+          <span>
+            <strong>NorthStar</strong>
+            <small>Customer care</small>
+          </span>
+        </button>
       </div>
 
       <nav className="nav-actions" aria-label="Support actions">
-        {ACTIONS.map((a) => (
+        {ACTIONS.map((action) => (
           <button
-            key={a.key}
+            key={action.key}
             type="button"
-            className={active === a.key ? 'active' : ''}
-            onClick={() => onNavigate(a.key)}
+            className={active === action.key ? 'active' : ''}
+            onClick={() => onNavigate(action.key)}
           >
-            {a.label}
+            {action.label}
           </button>
         ))}
       </nav>
 
       <div className="session-status" title={sessionWarning}>
-        {sessionLoading
-          ? 'Starting guest session…'
-          : sessionToken
-            ? 'Guest session active'
-            : 'Guest session unavailable'}
+        <span className={sessionToken ? 'status-dot active' : 'status-dot'} />
+        {sessionLoading ? 'Connecting…' : sessionToken ? 'Secure session' : 'Offline mode'}
       </div>
     </header>
   );

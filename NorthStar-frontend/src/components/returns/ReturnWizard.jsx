@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import { useSession } from '../../context/SessionContext.jsx';
+import { useSession } from '../../context/sessionContext.js';
 import {
   checkReturnEligibility,
   createReturnRequest
 } from '../../services/returnService.js';
-import { getOrder } from '../../services/orderService.js';
 import { RETURN_REASONS } from '../../utils/constants.js';
 import LoadingSkeleton from '../common/LoadingSkeleton.jsx';
 import ErrorNotice from '../common/ErrorNotice.jsx';
@@ -61,11 +60,8 @@ export default function ReturnWizard() {
         return;
       }
 
-      // Use order payload from eligibility response; fall back to order detail
-      let order = eligibility.order || null;
-      if (!order) {
-        order = await getOrder(form.order_number.trim(), sessionToken);
-      }
+      const order = eligibility.order;
+      if (!order) throw new Error('The API did not return eligible order details.');
 
       setOrderDetail(order);
       setSelectedItem(order.items?.[0]?.id || '');

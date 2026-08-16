@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Modal from '../common/Modal.jsx';
 import { subscribeStockAlert } from '../../services/inventoryService.js';
-import { useSession } from '../../context/SessionContext.jsx';
+import { useSession } from '../../context/sessionContext.js';
 import { validateStockAlertEmail } from '../../utils/validators.js';
 
 export default function NotifyModal({ variantId, productTitle, size, color, onClose }) {

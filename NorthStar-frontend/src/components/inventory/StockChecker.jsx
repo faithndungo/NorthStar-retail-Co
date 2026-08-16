@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useSession } from '../../context/SessionContext.jsx';
+import { useSession } from '../../context/sessionContext.js';
 import { getProducts, checkInventory } from '../../services/inventoryService.js';
 import { normalizeStockStatus } from '../../utils/formatters.js';
 import LoadingSkeleton from '../common/LoadingSkeleton.jsx';
@@ -73,15 +73,14 @@ export default function StockChecker() {
     dismissedRef.current = '';
   }, [variantKey]);
 
-  // Reset variant fields only in catalog (dropdown) mode
-  useEffect(() => {
-    if (!catalogAvailable) return;
+  function handleProductChange(value) {
+    setProductId(value);
     setSize('');
     setColor('');
     setStock(null);
     setNotifyOpen(false);
     setError('');
-  }, [productId, catalogAvailable]);
+  }
 
   async function runCheck() {
     if (!productId.trim() || !size.trim() || !color.trim()) return;
@@ -162,13 +161,13 @@ export default function StockChecker() {
                 Product
                 <select
                   value={productId}
-                  onChange={(e) => setProductId(e.target.value)}
+                  onChange={(e) => handleProductChange(e.target.value)}
                   required
                 >
                   <option value="">Select a product</option>
                   {products.map((p) => (
                     <option key={p.id} value={p.id}>
-                      {p.title}
+                      {p.name}
                     </option>
                   ))}
                 </select>
@@ -278,7 +277,7 @@ export default function StockChecker() {
       {notifyOpen && (
         <NotifyModal
           variantId={selectedVariant?.id || stock?.variant_id || stock?.variant}
-          productTitle={product?.title || productId}
+          productTitle={product?.name || productId}
           size={size}
           color={color}
           onClose={closeModal}

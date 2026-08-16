@@ -24,7 +24,7 @@ async function apiFetch(path, { method = 'GET', body, token } = {}) {
     throw new Error('Network error. Check that the Northstar API is reachable.');
   }
 
-  let payload = {};
+  let payload;
   try {
     payload = await response.json();
   } catch {

@@ -1,14 +1,9 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import ReturnViewSet, ReturnItemViewSet
+from django.urls import path
 
-
-router = DefaultRouter()
-
-router.register('returns', ReturnViewSet, basename='return')
-router.register('return-items', ReturnItemViewSet, basename='return-item')
+from .views import ReturnEligibilityView, ReturnRequestView
 
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('returns/eligibility/', ReturnEligibilityView.as_view(), name='return-eligibility'),
+    path('returns/requests/', ReturnRequestView.as_view(), name='return-request'),
 ]
