@@ -3,6 +3,14 @@
 NorthStar is a React and Django application for customer order tracking,
 inventory checks, restock alerts, and return requests.
 
+## 🛠️ Key Features
+
+* **Guest Session Management:** Token-based guest authentication with custom `X-Session-Token` header verification.
+* **Order Status Lookup:** Secure order tracking using unique order identifiers (`NS-1001` to `NS-1005`) and customer email verification.
+* **Smart Return Engine:** Automated return eligibility checks including window verification and return quantity limits.
+* **Stock Alert Engine:** Catalog inventory tracking with duplicate alert protection.
+* **Responsive Support UI:** Polished support interface with service cards, modal interactions, and status indicators.
+
 ## Local setup
 
 ### Backend
