@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useSession } from '../../context/SessionContext.jsx';
-import { lookupOrder, getOrder } from '../../services/orderService.js';
+import { useSession } from '../../context/sessionContext.js';
+import { lookupOrder } from '../../services/orderService.js';
 import { validateOrderLookup } from '../../utils/validators.js';
 import { currentStepForStatus, formatDate } from '../../utils/formatters.js';
 import LoadingSkeleton from '../common/LoadingSkeleton.jsx';
@@ -40,17 +40,7 @@ export default function OrderStatusLookup() {
         sessionToken
       );
 
-      let detail = null;
-      try {
-        detail = await getOrder(
-          lookupResult.order_number || form.order_number.trim(),
-          sessionToken
-        );
-      } catch {
-        detail = null;
-      }
-
-      setOrder({ ...lookupResult, detail });
+      setOrder(lookupResult);
     } catch (err) {
       setError(err.message || 'Unable to find this order.');
     } finally {
@@ -58,23 +48,16 @@ export default function OrderStatusLookup() {
     }
   }
 
-  const status = String(order?.status || order?.detail?.status || '').toLowerCase();
+  const status = String(order?.status || '').toLowerCase();
   const cancelled = status === 'cancelled';
   const currentStep = currentStepForStatus(status);
 
   const trackingUrl =
-    order?.tracking_url ||
-    order?.shipment?.tracking_url ||
-    order?.detail?.shipment?.tracking_url ||
-    '';
+    order?.tracking_url || '';
   const carrier =
-    order?.carrier ||
-    order?.shipment?.carrier ||
-    order?.detail?.shipment?.carrier ||
-    '';
-  const estimated =
-    order?.estimated_delivery || order?.detail?.estimated_delivery || '';
-  const items = order?.detail?.items || order?.items || [];
+    order?.tracking_carrier || '';
+  const estimated = order?.estimated_delivery || '';
+  const items = order?.items || [];
 
   return (
     <section className="card" aria-label="Order status lookup">

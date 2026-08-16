@@ -1,7 +1,7 @@
-from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import AllowAny
 from .models import CustomerProfile
 from .serializers import CustomerProfileSerializer, SessionInitSerializer
 
@@ -14,21 +14,41 @@ class SessionTokenView(APIView):
 
     def post(self, request):
         serializer = SessionInitSerializer(data=request.data)
-        if serializer.is_valid():
-            email = serializer.validated_data.get('email')
-            phone_number = serializer.validated_data.get('phone_number')
+        serializer.is_valid(raise_exception=True)
 
-            #Look up existing profile by email if provided, or create a new guest profile
+        token = serializer.validated_data.get('session_token')
+        email = serializer.validated_data.get('email') or None
+        phone_number = serializer.validated_data.get('phone_number') or None
 
-            if email:
-                profile, created = CustomerProfile.objects.get_or_create(email=email, defaults={'phone_number': phone_number})
-            else:
-                profile = CustomerProfile.objects.create(phone_number=phone_number)
+        profile = None
+        created = False
+        if token:
+            profile = CustomerProfile.objects.filter(session_token=token).first()
 
-            profile_data = CustomerProfileSerializer(profile).data
-            return Response({
-                "message": "Session token retrieved successfully.",
-                "data": profile_data
+        if profile is None:
+            profile = CustomerProfile.objects.create(
+                email=email,
+                phone_number=phone_number,
+            )
+            created = True
+        else:
+            changed = False
+            if email and not profile.email:
+                profile.email = email
+                changed = True
+            if phone_number and not profile.phone_number:
+                profile.phone_number = phone_number
+                changed = True
+            if changed:
+                profile.save()
+
+        profile_data = CustomerProfileSerializer(profile).data
+        return Response(
+            {
+                "message": "Session token created." if created else "Session token retrieved.",
+                "session_token": str(profile.session_token),
+                "data": profile_data,
             },
-            status=status.HTTP_200_OK if not created else status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            status=status.HTTP_201_CREATED if created else status.HTTP_200_OK,
+        )
+    permission_classes = [AllowAny]

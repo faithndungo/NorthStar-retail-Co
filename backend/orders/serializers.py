@@ -1,25 +1,31 @@
-# orders/serializers.py
-
 from rest_framework import serializers
 from .models import Order, OrderItem
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
-    title = serializers.ReadOnlyField()
-    sku = serializers.ReadOnlyField()
     subtotal = serializers.ReadOnlyField()
+    name = serializers.CharField(source='product_variant.product.name', read_only=True)
+    sku = serializers.CharField(source='product_variant.sku_variant', read_only=True)
+    size = serializers.CharField(source='product_variant.size', read_only=True)
+    color = serializers.CharField(source='product_variant.color', read_only=True)
 
     class Meta:
         model = OrderItem
-        fields = ['id', 'title', 'sku', 'quantity', 'unit_price', 'subtotal']
+        fields = [
+            'id',
+            'order',
+            'product_variant',
+            'quantity',
+            'unit_price',
+            'subtotal',
+            'name',
+            'sku',
+            'size',
+            'color',
+        ]
 
 
-class OrderLookupSerializer(serializers.Serializer):
-    order_number = serializers.CharField(required=True)
-    customer_email = serializers.EmailField(required=True)
-
-
-class OrderDetailSerializer(serializers.ModelSerializer):
+class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True, read_only=True)
 
     class Meta:
@@ -27,13 +33,14 @@ class OrderDetailSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'order_number',
-            'customer_email',
+            'customer',
             'status',
-            'carrier',
-            'tracking_number',
-            'tracking_url',
-            'estimated_delivery',
             'total_amount',
             'items',
             'created_at',
+            'updated_at',
+            'tracking_carrier',
+            'tracking_url',
+            'estimated_delivery',
         ]
+        read_only_fields = fields

@@ -32,7 +32,6 @@ dist-ssr
 .vite
 
 # pnpm
-pnpm-lock.yaml
 pnpm-workspace.yaml
 
 # Build outputs

@@ -11,11 +11,3 @@ export async function lookupOrder({ order_number, customer_email }, token) {
     token
   });
 }
-
-/**
- * GET /api/orders/{order_number}/
- * Fetches detailed item breakdown and shipping milestone log.
- */
-export async function getOrder(orderNumber, token) {
-  return apiFetch(`/orders/${encodeURIComponent(orderNumber)}/`, { token });
-}

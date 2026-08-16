@@ -1,18 +1,12 @@
-// src/services/sessionService.js
 import { apiFetch } from './api.js';
 
 /**
  * POST /api/accounts/session/
- * Creates or retrieves a guest session token.
+ * Generates or verifies a temporary guest session token.
  */
-export async function createSession(email = '', phoneNumber = '') {
+export async function createSession(existingToken) {
   return apiFetch('/accounts/session/', {
     method: 'POST',
-    body: { email, phone_number: phoneNumber },
+    body: existingToken ? { session_token: existingToken } : {}
   });
 }
-
-/**
- * Backward compatibility alias if any component calls initSession
- */
-export const initSession = createSession;

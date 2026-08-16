@@ -38,7 +38,7 @@ pnpm install
 
 3. Create a `.env` file in the root directory with necessary environment variables:
 ```env
-VITE_API_BASE_URL=http://localhost:3000/api
+VITE_API_BASE=/api
 ```
 
 ## Development
@@ -132,7 +132,7 @@ Configure the following in your `.env` file:
 
 | Variable | Description | Example |
 |----------|-------------|---------|
-| `VITE_API_BASE_URL` | Base URL for API requests | `http://localhost:3000/api` |
+| `VITE_API_BASE` | Base URL for API requests | `/api` |
 
 ## Available Scripts
 

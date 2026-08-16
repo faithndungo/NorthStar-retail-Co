@@ -1,7 +1,4 @@
-// src/services/api.js
-
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://127.0.0.1:8000/api';
-export const API_BASE_URL = API_BASE;
+const API_BASE = import.meta.env.VITE_API_BASE || '/api';
 
 function buildQuery(params) {
   const qs = Object.entries(params)
@@ -27,7 +24,7 @@ async function apiFetch(path, { method = 'GET', body, token } = {}) {
     throw new Error('Network error. Check that the Northstar API is reachable.');
   }
 
-  let payload = {};
+  let payload;
   try {
     payload = await response.json();
   } catch {
@@ -35,6 +32,7 @@ async function apiFetch(path, { method = 'GET', body, token } = {}) {
   }
 
   if (!response.ok) {
+    // Handles the structured error contract AND DRF default formats
     const detail =
       payload?.error?.message ||
       payload.detail ||
